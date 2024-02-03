@@ -16,8 +16,9 @@ if order for client to work, the server should be started first
 ### Ensure you have installed python
 go to [official python page](https://www.python.org/downloads/) and install python
 
-### Clone / download this repo
-clone download this repo
+### Clone / download this repo + requirements.txt
+- clone download this repo
+- run `pip install -r requirements.txt`
 
 ### Use the correct running procedure
 
