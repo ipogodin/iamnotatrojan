@@ -1,9 +1,11 @@
 import sys
+import argparse
 from ipUtils import is_valid_ipv4
 from ipUtils import secure_encode_decode
 from ipUtils import get_local_ip
 from types import MappingProxyType
 import fullDataClient
+import time
 
 STATIC_ADDR = MappingProxyType({
     "IP": "gAAAAABlvXn1cnfI87AdJyJS9Jm2OmVQmuD4w-eIHnz99_IHE4YSVVJd4dgN5jklv7Ao1Z_STnG7apec7xU6Dx134Vu6h8R-Ww==",
@@ -49,14 +51,15 @@ def main():
         usage_msg_and_exit()
 
     if operation_type == CLIENT:
+        print("starting client...")
         fullDataClient.run_full_client(final_ip)
     elif operation_type == SERVER:
-        print(f"running the server on the local IP address: {final_ip}")
+        print(f"running the server on the local IP address: {final_ip}...")
         fullDataClient.run_full_server(final_ip)
     else:
         print(f"please provide either s or c for the service specifics")
         usage_msg_and_exit()
-    print("operation has come to an end")
+    end_msg(True)
 
 
 def usage_msg_and_exit():
@@ -65,6 +68,25 @@ def usage_msg_and_exit():
         "service \n E.G. \n    - main.py s \n    - main.py c 127.0.0.1 \n    - main.py c KEY SuPerSecRet_Seed234kn")
     print(len(sys.argv))
     exit(1)
+
+
+def end_msg(fast=None):
+    if fast:
+        print("Operation has come to an end")
+    else:
+        emulate_typing("operation has cum")
+        time.sleep(1)
+        emulate_typing("\b\b")
+        time.sleep(0.2)
+        emulate_typing("ome to an end")
+        print('')
+
+
+def emulate_typing(text, typing_speed=0.2):
+    for char in text:
+        sys.stdout.write(char)
+        sys.stdout.flush()
+        time.sleep(typing_speed)
 
 
 if __name__ == "__main__":

@@ -1,8 +1,11 @@
 import base64
 import socket
+import random
+import time
 from cryptography.fernet import Fernet
 from base64 import urlsafe_b64encode
 from hashlib import sha256
+from enum import Enum
 
 
 def simple_encode_decode(value, seed, encode=True):
@@ -80,3 +83,29 @@ def get_local_ip():
     except Exception as e:
         print(f"Error obtaining local IP address: {e}")
         return None
+
+
+# exponential backoff
+def retry_operation(operation_func, max_attempts=5, *args, **kwargs):
+    attempt = 1
+    operation_result = None
+    while attempt <= max_attempts:
+        try:
+            operation_result = operation_func(*args, **kwargs)
+            break
+        except Exception as e:
+            print(f"Operation failed with error: {e}. Retrying...")
+            wait_time = (2 ** (attempt - 1)) + random.random()
+            print(f"Waiting {wait_time:.2f} seconds before retrying...")
+            time.sleep(wait_time)
+            attempt += 1
+    else:
+        print("All attempts failed.")
+    return operation_result
+
+
+class OperationOutcome(Enum):
+    STANDBY = 1
+    FAILURE = 2
+    RETRY = 3
+    EXIT = 4
